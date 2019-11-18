@@ -73,6 +73,7 @@ class AlienInvasion:
 
     def _update_bullets(self):
         """update position of bullets and get rid of old bullets."""
+        
         self.bullets.update()
         # get rid of bullets that have disappeared.
         for bullet in self.bullets.copy():

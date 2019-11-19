@@ -11,11 +11,12 @@ class Setting:
         self.ship_speed = 1.5
         
         # bullet settings
-        self.bullet_color = 60,60,60
+        self.bullet_color = (60, 60, 60)
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_speed = 1.5
 
+<<<<<<< HEAD
         self.bullets_allowed = 15
 
         # alien settings
@@ -26,3 +27,6 @@ class Setting:
 
 
 
+=======
+        self.bullets_allowed = 3
+>>>>>>> 8c85a8e4eeafd4344e5dfee737507247247febf1

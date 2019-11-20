@@ -188,8 +188,7 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
-            bullet.draw_bullet()
-
+            
         pygame.display.flip()
 
 

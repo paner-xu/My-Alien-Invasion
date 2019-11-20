@@ -10,6 +10,7 @@ from alien import Alien
 from game_stats import GameStats
 
 
+
 class AlienInvasion:
     """Overall class to manage game asets and behavior."""
 
@@ -187,8 +188,10 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+            bullet.draw_bullet()
 
         pygame.display.flip()
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.

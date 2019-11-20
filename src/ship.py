@@ -22,7 +22,7 @@ class Ship:
         # self.rect.midbottom = self.screen_rect.midbottom
 
         # ship's x axis setting
-        self.rect.x = ai_game.screen_width * (1 / 2)
+        self.rect.x = ai_game.screen_width * (1/2)
         # ship's y axis setting
         self.rect.y = ai_game.screen_height - self.image.get_rect().height
         # Store a decimal value for the ship's horizontal position.

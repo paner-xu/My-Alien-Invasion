@@ -25,3 +25,4 @@ class Setting:
         self.fleet_direction = 1
 
         self.ships_limit = 3
+

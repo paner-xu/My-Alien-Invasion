@@ -26,3 +26,14 @@ class Setting:
 
         self.ships_limit = 3
 
+        # sugar bonus settings
+        self.sugar_width = 20
+        self.sugar_height = 15
+        self.sugar_color = (255, 99, 71)
+        self.sugar_speed = 1
+        self.sugar_allowed = 3
+
+        # laser width and height settings
+        self.laser_width = 20
+        self.laser_height = 300
+        self.laser_color = (255, 255, 0)

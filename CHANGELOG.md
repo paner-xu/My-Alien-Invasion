@@ -1,3 +1,4 @@
+# 1.4.0(2019-11-22)
 # 1.3.0 (2019-11-18)
 - add bullet.py and alien.py
 - create the groups of bullets and aliens

@@ -1,4 +1,5 @@
 import sys
+import time
 from time import sleep
 
 import pygame
@@ -8,7 +9,8 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from game_stats import GameStats
-
+from bonus_system import BonusSystem
+from laser import Laser
 
 
 class AlienInvasion:
@@ -28,8 +30,9 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
         # create an instance to store game statistics.
         self.stats = GameStats(self)
-
+        self.bs = BonusSystem(self)
         self.ship = Ship(self)
+        self.laser = Laser(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         # 创建舰队
@@ -45,6 +48,8 @@ class AlienInvasion:
             if self.stats.game_active:
                 self.ship.update()
                 self._update_bullets()
+                self.bs.update_sugar()
+                self.shoot_laser()
                 self._update_aliens()
             self._update_screen()
 
@@ -98,6 +103,26 @@ class AlienInvasion:
         if not self.aliens:
             # destroy exiting bullets and create new fleet.
             self.bullets.empty()
+            self._create_fleet()
+
+    def shoot_laser(self):
+        # shoot laser when the ship eats sugar.
+        if self.bs.sugar_rect.bottom == self.ship.rect.top:
+            self.update_laser()
+
+    def update_laser(self):
+        self.laser.x = self.ship.rect.x
+        self.laser.laser_rect.x = self.laser.x
+        self._check_laser_alien_collisions()
+
+    def _check_laser_alien_collisions(self):
+        """respond to laser-alien collisions."""
+        # remove any aliens that have collided.
+        for alien in self.aliens.sprites():
+            if alien.rect.x == self.laser.laser_rect.x:
+                self.aliens.remove(alien)
+        if not self.aliens:
+            self.laser.laser_rect.empty()
             self._create_fleet()
 
     def _create_fleet(self):
@@ -188,7 +213,9 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
-            
+        self.bs.draw_sugar()
+        if self.bs.sugar_rect.bottom == self.ship.rect.top:
+            self.laser.draw_laser()
         pygame.display.flip()
 
 

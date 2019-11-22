@@ -20,11 +20,7 @@ class Ship:
 
         # Start each new ship at the bottom center of the screen
         # self.rect.midbottom = self.screen_rect.midbottom
-
-        # ship's x axis setting
-        self.rect.x = ai_game.screen_width * (1/2)
-        # ship's y axis setting
-        self.rect.y = ai_game.screen_height - self.image.get_rect().height
+        self.rect.midbottom = self.screen_rect.midbottom
         # Store a decimal value for the ship's horizontal position.
         self.x = float(self.rect.x)
 

@@ -1,3 +1,6 @@
+# 1.4.0 (2019-11-23)
+- add the function of shoot laser for the ship
+
 # 1.3.0 (2019-11-18)
 - add bullet.py and alien.py
 - create the groups of bullets and aliens

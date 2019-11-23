@@ -10,6 +10,8 @@ class Laser(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.ai_game = ai_game
+        self.groups = pygame.sprite.Group()
+        self.fire_flag = False
 
         # laser settings
         self.color = (70, 70, 70)
@@ -28,4 +30,22 @@ class Laser(Sprite):
 
     def draw_laser(self):
         """draw the laser to the screen"""
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        if self.fire_flag:
+            pygame.draw.rect(self.screen, self.color, self.rect)
+
+    def _update_laser(self, ai_game):
+        """update position of laser"""
+        self.update()
+        self._check_laser_alien_collisions(ai_game)
+
+    def _check_laser_alien_collisions(self, ai_game):
+        """respond to laser-alien collisions."""
+        # remove any laser and aliens that have collided.
+        if self.fire_flag:
+            laser_group = pygame.sprite.Group()
+            laser_group.add(ai_game.laser)
+            conllisions = pygame.sprite.groupcollide(
+                laser_group, ai_game.aliens, False, True)
+            if not ai_game.aliens:
+                # destroy exiting laser and create new fleet.
+                ai_game._create_fleet()

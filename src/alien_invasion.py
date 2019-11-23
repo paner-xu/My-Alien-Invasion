@@ -31,7 +31,7 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.laser = pygame.sprite.Group()
+        self.laser = Laser(self)
         self.aliens = pygame.sprite.Group()
         # create fleet
         self._create_fleet()
@@ -46,7 +46,7 @@ class AlienInvasion:
             if self.stats.game_active:
                 self.ship.update()
                 self._update_bullets()
-                self._update_laser()
+                self.laser._update_laser(self)
                 self._update_aliens()
             self._update_screen()
 
@@ -61,7 +61,7 @@ class AlienInvasion:
     def _check_keydown_events(self, event):
         """Respond to keypress. """
         if event.key == pygame.K_l:
-            self._fire_laser()
+            self.laser.fire_flag = True
         if event.key == pygame.K_SPACE:
             self._fire_bullet()
         if event.key == pygame.K_RIGHT:
@@ -78,8 +78,7 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
         if event.key == pygame.K_l:
-            for laser in self.laser.copy():
-                self.laser.remove(laser)
+            self.laser.fire_flag = False
 
     def _fire_bullet(self):
         """create a new bullet and add it to the bullets group."""
@@ -105,31 +104,6 @@ class AlienInvasion:
         if not self.aliens:
             # destroy exiting bullets and create new fleet.
             self.bullets.empty()
-            self._create_fleet()
-
-    def _fire_laser(self):
-        """create a new laser"""
-        if len(self.laser) < 1:
-            new_laser = Laser(self)
-            self.laser.add(new_laser)
-
-    def _update_laser(self):
-        """update position of laser"""
-
-        self.laser.update()
-        # get rid of laser that have disappeared.
-        # for laser in self.laser.copy():
-            # if  laser.rect.x != self.ship.x + self.ship.rect.width / 2 - laser.width / 2:
-            #     self.laser.remove(laser)
-        self._check_laser_alien_collisions()
-
-    def _check_laser_alien_collisions(self):
-        """respond to laser-alien collisions."""
-        # remove any laser and aliens that have collided.
-        conllisions = pygame.sprite.groupcollide(
-            self.laser, self.aliens, False, True)
-        if not self.aliens:
-            # destroy exiting laser and create new fleet.
             self._create_fleet()
 
     def _create_fleet(self):
@@ -194,7 +168,6 @@ class AlienInvasion:
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()
-            self.laser.empty()
 
             # Create a new fleet and center the ship.
             self._create_fleet()
@@ -220,8 +193,7 @@ class AlienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        for las in self.laser.sprites():
-            las.draw_laser()
+        self.laser.draw_laser()
         self.aliens.draw(self.screen)
 
         pygame.display.flip()

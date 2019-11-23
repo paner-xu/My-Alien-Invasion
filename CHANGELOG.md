@@ -1,3 +1,6 @@
+# 1.4.1(2019-11-23)
+- refactor the class of laser and move the logic of fire laser from alien_invasion.py to laser.py
+
 # 1.4.0 (2019-11-23)
 - add the function of shoot laser for the ship
 

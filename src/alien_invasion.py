@@ -49,7 +49,7 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self.bs.update_sugar()
-                self.shoot_laser()
+                self.bs.shoot_laser()
                 self._update_aliens()
             self._update_screen()
 
@@ -105,25 +105,25 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
-    def shoot_laser(self):
-        # shoot laser when the ship eats sugar.
-        if self.bs.sugar_rect.bottom == self.ship.rect.top:
-            self.update_laser()
+    # def shoot_laser(self):
+    #     # shoot laser when the ship eats sugar.
+    #     if self.bs.sugar_rect.bottom == self.ship.rect.top:
+    #         self.update_laser()
 
-    def update_laser(self):
-        self.laser.x = self.ship.rect.x
-        self.laser.laser_rect.x = self.laser.x
-        self._check_laser_alien_collisions()
+    # def update_laser(self):
+    #     self.laser.x = self.ship.rect.x
+    #     self.laser.laser_rect.x = self.laser.x
+    #     self._check_laser_alien_collisions()
 
-    def _check_laser_alien_collisions(self):
-        """respond to laser-alien collisions."""
-        # remove any aliens that have collided.
-        for alien in self.aliens.sprites():
-            if alien.rect.x == self.laser.laser_rect.x:
-                self.aliens.remove(alien)
-        if not self.aliens:
-            self.laser.laser_rect.empty()
-            self._create_fleet()
+    # def _check_laser_alien_collisions(self):
+    #     """respond to laser-alien collisions."""
+    #     # remove any aliens that have collided.
+    #     for alien in self.aliens.sprites():
+    #         if alien.rect.x == self.laser.laser_rect.x:
+    #             self.aliens.remove(alien)
+    #     if not self.aliens:
+    #         self.laser.laser_rect.empty()
+    #         self._create_fleet()
 
     def _create_fleet(self):
         """create the fleet of aliens."""

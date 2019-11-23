@@ -27,24 +27,24 @@ class BonusSystem:
         self.sugar_rect.x = self.x
         self.sugar_rect.y = self.y
 
-    # def _check_laser_alien_collisions(self):
-    #     """respond to laser-alien collisions."""
-    #     # remove any aliens that have collided.
-    #     for alien in self.ai_game.aliens.sprites():
-    #         if alien.rect.x == self.laser.laser_rect.x:
-    #             self.ai_game.aliens.remove(alien)
-    #     if not self.ai_game.aliens:
-    #         self.laser.laser_rect.empty()
-    #         self.ai_game._create_fleet()
+    def _check_laser_alien_collisions(self):
+        """respond to laser-alien collisions."""
+        # remove any aliens that have collided.
+        for alien in self.ai_game.aliens.sprites():
+            if alien.rect.x == self.laser.laser_rect.x:
+                self.ai_game.aliens.remove(alien)
+        if not self.ai_game.aliens:
+            self.laser.laser_rect.empty()
+            self.ai_game._create_fleet()
 
-    # def shoot_laser(self):
-    #     if self.sugar_rect.bottom == self.ship.rect.top:
-    #         self.update_laser()
+    def shoot_laser(self):
+        if self.sugar_rect.bottom == self.ship.rect.top:
+            self.update_laser()
 
-    # def update_laser(self):
-    #     self.laser.x = self.ship.rect.x
-    #     self.laser.laser_rect.x = self.laser.x
-    #     self.ai_game._check_laser_alien_collisions()
+    def update_laser(self):
+        self.laser.x = self.ship.rect.x
+        self.laser.laser_rect.x = self.laser.x
+        self._check_laser_alien_collisions()
 
     def draw_sugar(self):
         # draw the sugar.

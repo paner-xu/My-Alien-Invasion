@@ -1,3 +1,6 @@
+# 1.5.0(2019-11-28)
+- add bonus.py and drop the bonus random
+
 # 1.4.1(2019-11-23)
 - refactor the class of laser and move the logic of fire laser from alien_invasion.py to laser.py
 

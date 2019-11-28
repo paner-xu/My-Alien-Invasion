@@ -9,6 +9,7 @@ from game_stats import GameStats
 from laser import Laser
 from settings import Setting
 from ship import Ship
+from bonus import Bonus
 
 
 class AlienInvasion:
@@ -32,6 +33,7 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.laser = Laser(self)
+        self.bonus = Bonus(self)
         self.aliens = pygame.sprite.Group()
         # create fleet
         self._create_fleet()
@@ -46,8 +48,9 @@ class AlienInvasion:
             if self.stats.game_active:
                 self.ship.update()
                 self._update_bullets()
-                self.laser._update_laser(self)
                 self._update_aliens()
+                self._update_bonus()
+                self.laser._update_laser(self)
             self._update_screen()
 
     def _check_events(self):
@@ -168,6 +171,7 @@ class AlienInvasion:
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()
+            self.bonus.bonuses.empty()
 
             # Create a new fleet and center the ship.
             self._create_fleet()
@@ -187,6 +191,15 @@ class AlienInvasion:
                 self._ship_hit()
                 break
 
+    def _update_bonus(self):
+        """update position of bonuses and get rid of old bonuses."""
+        self.bonus.check_edges()
+        self.bonus.update(self)
+        # look for collision between ship and bonus
+        self.bonus._check_bonus_ship_collisions()
+        # bonuses hitting the bottom of the screen
+        self.bonus._check_bonus_bottom()
+
     def _update_screen(self):
         """Update images on the scren, and flip to the new ship."""
         self.screen.fill(self.settings.bg_color)
@@ -195,6 +208,5 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.laser.draw_laser()
         self.aliens.draw(self.screen)
-
+        self.bonus.draw_bonus()
         pygame.display.flip()
-

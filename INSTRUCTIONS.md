@@ -49,7 +49,7 @@ run_game  的第 46 行 self._check_events() 检测用户的输入，该项目�
 
 重构 bonus_system 类，实现上面的功能以及我们之前说过的十秒内随机下落 sugar 和飞船吃到 sugar 后能力维持十秒的功能。第一个十秒下落的功能，我们知道飞船一直都是在向下落的，可以看 alien 的 update 函数就知道了。只是在 bonus_system 里需要增加几处时间计算。在 bonus_system 的构造函数 \_\_init\_\_  里需要有一个程序开始时间 programStartTime = time.time() 成员变量，这个变量在 bonus_system 实例化时就确定了，然后在 bonus_system 类下更新 sugar 位置信息的函数里要再获取下当前时间 currentTime = time.time(), 当 currentTime - programStartTime 大于 9.9 小于 10.1 时（或者随机几秒）就要新降 sugar 了，当然别忘了旧 sugar 的处理。飞船能力维持 10 秒的处理与此类似，需要先记录下飞船吃到 sugar 的时间，然后发射函数里再检测当前时间与吃到时间之差，当差大于 10 秒时，能力就失效（一个布尔变量的开关）。
 
-另外关于随机下落 sugar 的处理，就是下落的 sugar 有个 id 是随机生成的，laser 和 guarder 也有各自的 id, 当飞船吃到 sugar 后，匹配 sugar‘s id 的能力（laser 或 guarder）被激活。可以把每个功能的 id 保存在 bonus_system 的一个数组成员变量里。比如我们还可在 bonus_system 里保存一个 sugar 的数组，比如 sugars = [laser, sugar], 然后凭掉落 id 选中 sugars[id]. 那么因为这个数组里的都是 sugar, 所以可以方便的调用 sugars[id].update 或 sugars[id].draw 等。这就是继承抽象好处的体现。
+另外关于随机下落 sugar 的处理，就是下落的 sugar 有个 id 是随机生成的，laser 和 guarder 也有各自的 id, 当飞船吃到 sugar 后，匹配 sugar‘s id 的能力（laser 或 guarder）被激活。可以把每个功能的 id 保存在 bonus_system 的一个数组成员变量里。比如我们还可在 bonus_system 里保存一个 sugar 的数组，比如 sugars = [laser, guarder], 然后凭掉落 id 选中 sugars[id]. 那么因为这个数组里的都是 sugar, 所以可以方便的调用 sugars[id].update 或 sugars[id].draw 等。这就是继承抽象好处的体现。
 
 因为碰撞检测使用了 Sprite 的 groupcollide 函数，所以功能需要继承 Sprite. 又因为要继承 Sugar, 所以就会产生多继承。这里需要注意的是 Sprite 也有名为 update 和 draw 的函数。我不太确定两个父类有重名方法会否导致冲突之类，但不试试怎么知道呢。
 

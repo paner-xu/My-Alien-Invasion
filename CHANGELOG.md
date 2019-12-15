@@ -1,3 +1,8 @@
+# 1.6.0(2019-12-12)
+- add guarder.py and sugar.py
+- create a guarder to protect ship 
+- create an abstract class to define three methods: update method、draw method and check_collision method
+
 # 1.5.0(2019-11-28)
 - add bonus.py and drop the bonus random
 

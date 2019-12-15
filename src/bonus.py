@@ -29,12 +29,6 @@ class Bonus(Sprite):
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
 
-    # def _create_bonus_group(self):
-        # add bonus into bonus group
-    #     if len(self.bonuses) < self.bonus_allowed:
-    #         new_bonus = Bonus(self)
-    #         self.bonuses.add(new_bonus)
-
     def update(self, ai_game):
         "update the position of the sugar."
         # update the sugar position.
@@ -50,7 +44,7 @@ class Bonus(Sprite):
     def _check_bonus_bottom(self):
         """Check if any bonus have reached the bottom of the screen."""
         screen_rect = self.screen.get_rect()
-        for bonus in self.bonuses.sprites():
+        for bonus in self.bonuses:
             if bonus.rect.bottom >= screen_rect.bottom:
                 self.bonuses.remove(bonus)
 
@@ -60,7 +54,10 @@ class Bonus(Sprite):
         if self.rect.right >= screen_rect.right or self.rect.left <= 0:
             self.bonus_direction *= -1
 
-    def _check_bonus_ship_collisions(self):
+    def _check_bonus_ship_collisions(self, ai_game):
         """respond to bonus-ship collisions."""
-        # look for bonus-ship collisions.
-        pygame.sprite.spritecollideany(self.ai_game.ship, self.bonuses)
+        bonus_group = pygame.sprite.Group()
+        bonus_group.add(ai_game.bonus)
+        ai_game.ship.ship_group.add(ai_game.ship)
+        pygame.sprite.groupcollide(
+            ai_game.ship.ship_group, bonus_group, False, True)

@@ -10,6 +10,7 @@ from laser import Laser
 from settings import Setting
 from ship import Ship
 from bonus import Bonus
+from guarder import Gaurder
 
 
 class AlienInvasion:
@@ -33,6 +34,7 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.laser = Laser(self)
+        self.guarder = Gaurder(self)
         self.bonus = Bonus(self)
         self.aliens = pygame.sprite.Group()
         # create fleet
@@ -51,6 +53,7 @@ class AlienInvasion:
                 self._update_aliens()
                 self._update_bonus()
                 self.laser._update_laser(self)
+                self.guarder._update_guarder(self)
             self._update_screen()
 
     def _check_events(self):
@@ -65,6 +68,8 @@ class AlienInvasion:
         """Respond to keypress. """
         if event.key == pygame.K_l:
             self.laser.fire_flag = True
+        if event.key == pygame.K_g:
+            self.guarder.fire_flag = True
         if event.key == pygame.K_SPACE:
             self._fire_bullet()
         if event.key == pygame.K_RIGHT:
@@ -82,6 +87,8 @@ class AlienInvasion:
             self.ship.moving_left = False
         if event.key == pygame.K_l:
             self.laser.fire_flag = False
+        if event.key == pygame.K_g:
+            self.guarder.fire_flag = False
 
     def _fire_bullet(self):
         """create a new bullet and add it to the bullets group."""
@@ -138,6 +145,10 @@ class AlienInvasion:
         alien.rect.x = alien.x
         alien.rect.y = alien_height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
+
+    def aliens_shoot_bullets(self):
+        """respond aliens shoot bullets to ship"""
+        pass
 
     def _check_fleet_edges(self):
         """respond appropriately if any aliens have reached an edge."""
@@ -196,17 +207,18 @@ class AlienInvasion:
         self.bonus.check_edges()
         self.bonus.update(self)
         # look for collision between ship and bonus
-        self.bonus._check_bonus_ship_collisions()
+        self.bonus._check_bonus_ship_collisions(self)
         # bonuses hitting the bottom of the screen
         self.bonus._check_bonus_bottom()
 
     def _update_screen(self):
-        """Update images on the scren, and flip to the new ship."""
+        """Update images on the screen, and flip to the new ship."""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        self.laser.draw_laser()
+        self.laser.draw()
         self.aliens.draw(self.screen)
         self.bonus.draw_bonus()
+        self.guarder.draw()
         pygame.display.flip()

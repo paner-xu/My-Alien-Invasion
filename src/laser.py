@@ -1,8 +1,9 @@
 import pygame
 from pygame.sprite import Sprite
+from sugar import Sugar
 
 
-class Laser(Sprite):
+class Laser(Sprite, Sugar):
     """A class to manage lasers fired from the ship"""
 
     def __init__(self, ai_game):
@@ -28,7 +29,8 @@ class Laser(Sprite):
         self.rect.x = self.ai_game.ship.x + \
             self.ai_game.ship.rect.width / 2 - self.width / 2
 
-    def draw_laser(self):
+    # def draw_laser(self):
+    def draw(self):
         """draw the laser to the screen"""
         if self.fire_flag:
             pygame.draw.rect(self.screen, self.color, self.rect)
@@ -36,9 +38,11 @@ class Laser(Sprite):
     def _update_laser(self, ai_game):
         """update position of laser"""
         self.update()
-        self._check_laser_alien_collisions(ai_game)
+        # self._check_laser_alien_collisions(ai_game)
+        self.check_collisions(ai_game)
 
-    def _check_laser_alien_collisions(self, ai_game):
+    # def _check_laser_alien_collisions(self, ai_game):
+    def check_collisions(self, ai_game):
         """respond to laser-alien collisions."""
         # remove any laser and aliens that have collided.
         if self.fire_flag:

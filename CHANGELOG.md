@@ -1,3 +1,17 @@
+# 1.6.0(2019-12-12)
+- add guarder.py and sugar.py
+- create a guarder to protect ship 
+- create an abstract class to define three methods: update method、draw method and check_collision method
+
+# 1.5.0(2019-11-28)
+- add bonus.py and drop the bonus random
+
+# 1.4.1(2019-11-23)
+- refactor the class of laser and move the logic of fire laser from alien_invasion.py to laser.py
+
+# 1.4.0 (2019-11-23)
+- add the function of shoot laser for the ship
+
 # 1.3.1 (2019-11-23)
 - separate the launch program
 

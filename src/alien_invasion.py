@@ -3,12 +3,14 @@ from time import sleep
 
 import pygame
 
+from alien import Alien
+from bullet import Bullet
+from game_stats import GameStats
+from laser import Laser
 from settings import Setting
 from ship import Ship
-from bullet import Bullet
-from alien import Alien
-from game_stats import GameStats
-
+from bonus import Bonus
+from guarder import Gaurder
 
 
 class AlienInvasion:
@@ -31,8 +33,11 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.laser = Laser(self)
+        self.guarder = Gaurder(self)
+        self.bonus = Bonus(self)
         self.aliens = pygame.sprite.Group()
-        # 创建舰队
+        # create fleet
         self._create_fleet()
         # Set the background color.
         self.bg_color = (230, 230, 230)
@@ -46,6 +51,9 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+                self._update_bonus()
+                self.laser._update_laser(self)
+                self.guarder._update_guarder(self)
             self._update_screen()
 
     def _check_events(self):
@@ -53,26 +61,34 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-            elif event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
     def _check_keydown_events(self, event):
         """Respond to keypress. """
+        if event.key == pygame.K_l:
+            self.laser.fire_flag = True
+        if event.key == pygame.K_g:
+            self.guarder.fire_flag = True
+        if event.key == pygame.K_SPACE:
+            self._fire_bullet()
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
+        if event.key == pygame.K_LEFT:
             self.ship.moving_left = True
-        elif event.key == pygame.K_SPACE:
-            self._fire_bullet()
-        elif event.key == pygame.K_q:
+        if event.key == pygame.K_q:
             sys.exit()
 
     def _check_keyup_events(self, event):
         """Respond to key release."""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
-        elif event.key == pygame.K_LEFT:
+        if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+        if event.key == pygame.K_l:
+            self.laser.fire_flag = False
+        if event.key == pygame.K_g:
+            self.guarder.fire_flag = False
 
     def _fire_bullet(self):
         """create a new bullet and add it to the bullets group."""
@@ -130,6 +146,10 @@ class AlienInvasion:
         alien.rect.y = alien_height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
 
+    def aliens_shoot_bullets(self):
+        """respond aliens shoot bullets to ship"""
+        pass
+
     def _check_fleet_edges(self):
         """respond appropriately if any aliens have reached an edge."""
         for alien in self.aliens.sprites():
@@ -162,6 +182,7 @@ class AlienInvasion:
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()
+            self.bonus.bonuses.empty()
 
             # Create a new fleet and center the ship.
             self._create_fleet()
@@ -181,13 +202,23 @@ class AlienInvasion:
                 self._ship_hit()
                 break
 
+    def _update_bonus(self):
+        """update position of bonuses and get rid of old bonuses."""
+        self.bonus.check_edges()
+        self.bonus.update(self)
+        # look for collision between ship and bonus
+        self.bonus._check_bonus_ship_collisions(self)
+        # bonuses hitting the bottom of the screen
+        self.bonus._check_bonus_bottom()
+
     def _update_screen(self):
-        """Update images on the scren, and flip to the new ship."""
+        """Update images on the screen, and flip to the new ship."""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.laser.draw()
         self.aliens.draw(self.screen)
-            
+        self.bonus.draw_bonus()
+        self.guarder.draw()
         pygame.display.flip()
-

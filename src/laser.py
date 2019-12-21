@@ -47,7 +47,8 @@ class Laser(Sprite, Sugar):
         # remove any laser and aliens that have collided.
         if self.fire_flag:
             laser_group = pygame.sprite.Group()
-            laser_group.add(ai_game.laser)
+            # laser_group.add(ai_game.laser)
+            laser_group.add(ai_game.bonus.laser)
             conllisions = pygame.sprite.groupcollide(
                 laser_group, ai_game.aliens, False, True)
             if not ai_game.aliens:

@@ -6,11 +6,11 @@ import pygame
 from alien import Alien
 from bullet import Bullet
 from game_stats import GameStats
-from laser import Laser
+# from laser import Laser
 from settings import Setting
 from ship import Ship
 from bonus import Bonus
-from guarder import Gaurder
+# from guarder import Gaurder
 
 
 class AlienInvasion:
@@ -33,8 +33,8 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.laser = Laser(self)
-        self.guarder = Gaurder(self)
+        # self.laser = Laser(self)
+        # self.guarder = Gaurder(self)
         self.bonus = Bonus(self)
         self.aliens = pygame.sprite.Group()
         # create fleet
@@ -52,8 +52,9 @@ class AlienInvasion:
                 self._update_bullets()
                 self._update_aliens()
                 self._update_bonus()
-                self.laser._update_laser(self)
-                self.guarder._update_guarder(self)
+                # self.laser._update_laser(self)
+                # self.guarder._update_guarder(self)
+                self.bonus._update(self)
             self._update_screen()
 
     def _check_events(self):
@@ -67,9 +68,11 @@ class AlienInvasion:
     def _check_keydown_events(self, event):
         """Respond to keypress. """
         if event.key == pygame.K_l:
-            self.laser.fire_flag = True
+            # self.laser.fire_flag = True
+            self.bonus.laser.fire_flag = True
         if event.key == pygame.K_g:
-            self.guarder.fire_flag = True
+            # self.guarder.fire_flag = True
+            self.bonus.guarder.fire_flag = True
         if event.key == pygame.K_SPACE:
             self._fire_bullet()
         if event.key == pygame.K_RIGHT:
@@ -86,9 +89,11 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
         if event.key == pygame.K_l:
-            self.laser.fire_flag = False
+            # self.laser.fire_flag = False
+            self.bonus.laser.fire_flag = False
         if event.key == pygame.K_g:
-            self.guarder.fire_flag = False
+            # self.guarder.fire_flag = False
+            self.bonus.guarder.fire_flag = False
 
     def _fire_bullet(self):
         """create a new bullet and add it to the bullets group."""
@@ -217,8 +222,9 @@ class AlienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        self.laser.draw()
+        # self.laser.draw()
         self.aliens.draw(self.screen)
         self.bonus.draw_bonus()
-        self.guarder.draw()
+        self.bonus._draw()
+        # self.guarder.draw()
         pygame.display.flip()

@@ -1,3 +1,7 @@
+# 1.7.0(2019-12-21)
+- refactor bonus.py
+- laser and guader methods implement by bonus.py
+
 # 1.6.0(2019-12-12)
 - add guarder.py and sugar.py
 - create a guarder to protect ship 

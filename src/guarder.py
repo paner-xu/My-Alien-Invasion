@@ -53,7 +53,8 @@ class Gaurder(Sprite, Sugar):
         # remove any guarder and aliens that have collided.
         if self.fire_flag:
             guarder_group = pygame.sprite.Group()
-            guarder_group.add(ai_game.guarder)
+            # guarder_group.add(ai_game.guarder)
+            guarder_group.add(ai_game.bonus.guarder)
             conllisions = pygame.sprite.groupcollide(
                 guarder_group, ai_game.aliens, False, True)
             if not ai_game.aliens:

@@ -1,6 +1,8 @@
 import pygame
 from pygame.sprite import Sprite
 import random
+from laser import Laser
+from guarder import Gaurder
 
 
 class Bonus(Sprite):
@@ -10,8 +12,14 @@ class Bonus(Sprite):
         """create a bonus object"""
         super().__init__()
         self.screen = ai_game.screen
+        self.screen_width = ai_game.screen_width
+        self.screen_height = ai_game.screen_height
+        self.ship = ai_game.ship
         self.ai_game = ai_game
         self.bonuses = pygame.sprite.Group()
+
+        self.laser = Laser(self)
+        self.guarder = Gaurder(self)
 
         # sugar setting
         self.width = 25
@@ -61,3 +69,11 @@ class Bonus(Sprite):
         ai_game.ship.ship_group.add(ai_game.ship)
         pygame.sprite.groupcollide(
             ai_game.ship.ship_group, bonus_group, False, True)
+
+    def _update(self, ai_game):
+        self.laser._update_laser(ai_game)
+        self.guarder._update_guarder(ai_game)
+
+    def _draw(self):
+        self.laser.draw()
+        self.guarder.draw()

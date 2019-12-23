@@ -5,7 +5,7 @@ class Sugar(metaclass=ABCMeta):
     """a abstract class to manage three methods."""
     @abstractmethod
     def update(self):
-        # a method to update position.
+        # a method to move with the ship.
         pass
 
     @abstractmethod
@@ -16,4 +16,9 @@ class Sugar(metaclass=ABCMeta):
     @abstractmethod
     def draw(self):
         # a method to draw on the screen
+        pass
+
+    @abstractmethod
+    def _update(self):
+        # a method to update position.
         pass

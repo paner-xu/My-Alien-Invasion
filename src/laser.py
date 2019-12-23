@@ -35,7 +35,7 @@ class Laser(Sprite, Sugar):
         if self.fire_flag:
             pygame.draw.rect(self.screen, self.color, self.rect)
 
-    def _update_laser(self, ai_game):
+    def _update(self, ai_game):
         """update position of laser"""
         self.update()
         # self._check_laser_alien_collisions(ai_game)
@@ -48,9 +48,9 @@ class Laser(Sprite, Sugar):
         if self.fire_flag:
             laser_group = pygame.sprite.Group()
             # laser_group.add(ai_game.laser)
-            laser_group.add(ai_game.bonus.laser)
+            laser_group.add(ai_game.bonus_system.laser)
             conllisions = pygame.sprite.groupcollide(
-                laser_group, ai_game.aliens, False, True)
-            if not ai_game.aliens:
+                laser_group, ai_game.alien.aliens, False, True)
+            if not ai_game.alien.aliens:
                 # destroy exiting laser and create new fleet.
-                ai_game._create_fleet()
+                ai_game.alien._create_fleet()

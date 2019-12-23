@@ -1,3 +1,7 @@
+# 1.7.1(2019-12-23)
+- refactor alien_invasion.py, bullet.py, alien.py
+- add bonus_system to manage laser and guarder methods
+
 # 1.7.0(2019-12-21)
 - refactor bonus.py
 - laser and guader methods implement by bonus.py

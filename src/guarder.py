@@ -41,7 +41,7 @@ class Gaurder(Sprite, Sugar):
             pygame.draw.arc(self.screen, self.color, self.rect,
                             self.start_angle, self.stop_angle, self.width)
 
-    def _update_guarder(self, ai_game):
+    def _update(self, ai_game):
         """update position of laser"""
         self.update()
         # self._check_laser_alien_collisions(ai_game)
@@ -54,9 +54,9 @@ class Gaurder(Sprite, Sugar):
         if self.fire_flag:
             guarder_group = pygame.sprite.Group()
             # guarder_group.add(ai_game.guarder)
-            guarder_group.add(ai_game.bonus.guarder)
+            guarder_group.add(ai_game.bonus_system.guarder)
             conllisions = pygame.sprite.groupcollide(
-                guarder_group, ai_game.aliens, False, True)
-            if not ai_game.aliens:
+                guarder_group, ai_game.alien.aliens, False, True)
+            if not ai_game.alien.aliens:
                 # destroy exiting guarder and create new fleet.
-                ai_game._create_fleet()
+                ai_game.alien._create_fleet()

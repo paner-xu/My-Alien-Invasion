@@ -1,25 +1,21 @@
 import pygame
 from pygame.sprite import Sprite
 import random
-from laser import Laser
-from guarder import Gaurder
+import time
+# from laser import Laser
+# from guarder import Gaurder
+from sugar import Sugar
 
 
-class Bonus(Sprite):
+class Bonus(Sprite,Sugar):
     "A class to manage the bonuses for the ship."
 
     def __init__(self, ai_game):
         """create a bonus object"""
         super().__init__()
         self.screen = ai_game.screen
-        self.screen_width = ai_game.screen_width
-        self.screen_height = ai_game.screen_height
-        self.ship = ai_game.ship
         self.ai_game = ai_game
         self.bonuses = pygame.sprite.Group()
-
-        self.laser = Laser(self)
-        self.guarder = Gaurder(self)
 
         # sugar setting
         self.width = 25
@@ -44,8 +40,18 @@ class Bonus(Sprite):
         self.y += self.bonus_speed
         self.rect.x = self.x
         self.rect.y = self.y
+    
+    def _update(self,ai_game):
+        """update position of bonuses and get rid of old bonuses."""
+        self.check_edges()
+        self.update(ai_game)
+        # look for collision between ship and bonus
+        self.check_collisions(ai_game)
+        # bonuses hitting the bottom of the screen
+        self._check_bonus_bottom()
 
-    def draw_bonus(self):
+
+    def draw(self):
         "draw the bonus to the screen."
         pygame.draw.rect(self.screen, self.color, self.rect)
 
@@ -62,7 +68,7 @@ class Bonus(Sprite):
         if self.rect.right >= screen_rect.right or self.rect.left <= 0:
             self.bonus_direction *= -1
 
-    def _check_bonus_ship_collisions(self, ai_game):
+    def check_collisions(self, ai_game):
         """respond to bonus-ship collisions."""
         bonus_group = pygame.sprite.Group()
         bonus_group.add(ai_game.bonus)
@@ -70,10 +76,3 @@ class Bonus(Sprite):
         pygame.sprite.groupcollide(
             ai_game.ship.ship_group, bonus_group, False, True)
 
-    def _update(self, ai_game):
-        self.laser._update_laser(ai_game)
-        self.guarder._update_guarder(ai_game)
-
-    def _draw(self):
-        self.laser.draw()
-        self.guarder.draw()

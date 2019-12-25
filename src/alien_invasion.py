@@ -8,7 +8,7 @@ from bullet import Bullet
 from game_stats import GameStats
 from settings import Setting
 from ship import Ship
-from bonus import Bonus
+from candy import Candy
 from bonus_system import BonusSystem
 
 
@@ -31,12 +31,12 @@ class AlienInvasion:
         self.stats = GameStats(self)
 
         self.ship = Ship(self)
-        self.bonus = Bonus(self)
+        self.candy = Candy(self)
         self.bonus_system = BonusSystem(self)
         self.alien = Alien(self)
         self.bullet = Bullet(self)
         # create fleet
-        self.alien._create_fleet()
+        self.alien.create_fleet()
         # Set the background color.
         self.bg_color = (230, 230, 230)
 
@@ -47,9 +47,10 @@ class AlienInvasion:
 
             if self.stats.game_active:
                 self.ship.update()
-                self.bullet._update_bullets(self)
-                self.alien._update_aliens(self)
-                self.bonus_system._update(self)
+                self.bullet.update_bullets(self)
+                self.alien.update_aliens(self)
+                self.bonus_system.update(self)
+                self.bonus_system.drop_candy(self)
             self._update_screen()
 
     def _check_events(self):
@@ -67,7 +68,7 @@ class AlienInvasion:
         if event.key == pygame.K_g:
             self.bonus_system.guarder.fire_flag = True
         if event.key == pygame.K_SPACE:
-            self.bullet._fire_bullet()
+            self.bullet.fire_bullet()
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         if event.key == pygame.K_LEFT:
@@ -86,7 +87,7 @@ class AlienInvasion:
         if event.key == pygame.K_g:
             self.bonus_system.guarder.fire_flag = False
 
-    def _ship_hit(self):
+    def ship_hit(self):
         """Respond to the ship being hit by an alien."""
         if self.stats.ship_left > 0:
             # decrement ships_left.
@@ -94,10 +95,10 @@ class AlienInvasion:
             # Get rid of any remaining aliens and bullets.
             self.alien.aliens.empty()
             self.bullet.bullets.empty()
-            self.bonus.bonuses.empty()
+            self.candy.candies.empty()
 
             # Create a new fleet and center the ship.
-            self.alien._create_fleet()
+            self.alien.create_fleet()
             self.ship.center_ship()
 
             # pause.
@@ -110,7 +111,7 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         for bullet in self.bullet.bullets.sprites():
-            bullet.draw_bullet()
+            bullet.draw()
         self.alien.aliens.draw(self.screen)
-        self.bonus_system._draw()
+        self.bonus_system.draw()
         pygame.display.flip()

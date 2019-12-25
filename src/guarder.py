@@ -1,10 +1,10 @@
 import pygame
 from pygame.sprite import Sprite
-from sugar import Sugar
+from function import Function
 import math
 
 
-class Gaurder(Sprite, Sugar):
+class Gaurder(Sprite, Function):
     """A class to manage guader to protect the ship"""
 
     def __init__(self, ai_game):
@@ -28,7 +28,7 @@ class Gaurder(Sprite, Sugar):
         self.rect.centerx = ai_game.ship.rect.centerx
         self.rect.centery = ai_game.ship.rect.centery
 
-    def update(self):
+    def axis_update(self):
         """move the guarder with the ship"""
         # update the circle position
         self.rect.x = self.ai_game.ship.x + \
@@ -41,9 +41,9 @@ class Gaurder(Sprite, Sugar):
             pygame.draw.arc(self.screen, self.color, self.rect,
                             self.start_angle, self.stop_angle, self.width)
 
-    def _update(self, ai_game):
+    def update(self, ai_game):
         """update position of laser"""
-        self.update()
+        self.axis_update()
         # self._check_laser_alien_collisions(ai_game)
         self.check_collisions(ai_game)
 
@@ -59,4 +59,4 @@ class Gaurder(Sprite, Sugar):
                 guarder_group, ai_game.alien.aliens, False, True)
             if not ai_game.alien.aliens:
                 # destroy exiting guarder and create new fleet.
-                ai_game.alien._create_fleet()
+                ai_game.alien.create_fleet()

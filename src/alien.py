@@ -36,7 +36,7 @@ class Alien(Sprite):
 		self.x += (self.settings.alien_speed * self.settings.fleet_direction)
 		self.rect.x = self.x
 
-	def _create_fleet(self):
+	def create_fleet(self):
 		"""create the fleet of aliens."""
 		# create an alien and find the number of aliens in a row.
 		# spacing between each alien is equal to one alien width.
@@ -84,13 +84,13 @@ class Alien(Sprite):
 			alien.rect.y += self.settings.fleet_drop_speed
 		self.settings.fleet_direction *= -1
 
-	def _update_aliens(self,ai_game):
+	def update_aliens(self,ai_game):
 		"""Check if the fleet is at an edge, then update the positions of all aliens in the fleet."""
 		self._check_fleet_edges()
 		self.aliens.update()
 		# look for alien-ship collisions.
 		if pygame.sprite.spritecollideany(self.ship, self.aliens):
-			ai_game._ship_hit()
+			ai_game.ship_hit()
 
 		# aliens hitting the bottom of the screen
 		self._check_aliens_bottom(ai_game)
@@ -101,5 +101,5 @@ class Alien(Sprite):
 		for alien in self.aliens.sprites():
 			if alien.rect.bottom >= screen_rect.bottom:
 				# Treat this the same as if the ship got hit.
-				ai_game._ship_hit()
+				ai_game.ship_hit()
 				break

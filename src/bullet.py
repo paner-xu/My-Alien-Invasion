@@ -27,17 +27,17 @@ class Bullet(Sprite):
         # update the rect position
         self.rect.y = self.y
 
-    def draw_bullet(self):
+    def draw(self):
         """draw the bullet to the screen"""
         pygame.draw.rect(self.screen, self.color, self.rect)
 
-    def _fire_bullet(self):
+    def fire_bullet(self):
         """create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
-    def _update_bullets(self, ai_game):
+    def update_bullets(self, ai_game):
         """update position of bullets and get rid of old bullets."""
 
         self.bullets.update()
@@ -55,4 +55,4 @@ class Bullet(Sprite):
         if not ai_game.alien.aliens:
             # destroy exiting bullets and create new fleet.
             self.bullets.empty()
-            ai_game.alien._create_fleet()
+            ai_game.alien.create_fleet()

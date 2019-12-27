@@ -1,11 +1,9 @@
 import pygame
 from pygame.sprite import Sprite
 import random
-import time
-from function import Function
+import math
 
-
-class Candy(Sprite, Function):
+class Candy(Sprite):
     "A class to manage the bonuses for the ship."
 
     def __init__(self, ai_game):
@@ -14,52 +12,46 @@ class Candy(Sprite, Function):
         self.screen = ai_game.screen
         self.ai_game = ai_game
         self.ship = ai_game.ship
-        self.candies = pygame.sprite.Group()
-        self.candy_flag = False
+        self.collision_flag = False
+        self.show_flag = False
+        self.ID = -1
 
         # sugar setting
         self.width = 25
         self.height = 30
-        self.color = (255, 255, 0)
-        self.candy_speed = 1
+        self.candy_speed = 0.5
         self.candy_direction = 1
-        self.candy_allowed = 2
+        self.color = (255, 255, 0)
 
         # create a sugar rect at the top of screen and then set correct position.
-        self.random_x = random.randint(0, self.screen.get_rect().width)
-        self.rect = pygame.Rect(
-            self.random_x, 0, self.width, self.height)
-        # store the candy's position as a decimal value.
-        self.x = float(self.rect.x)
-        self.y = float(self.rect.y)
+        self.rect = pygame.Rect(0.0, 0.0, self.width, self.height)
 
-    def axis_update(self, ai_game):
+    def axis_update(self):
         "update the position of the sugar."
         # update the sugar position.
-        self.x += (self.candy_speed * self.candy_direction)
-        self.y += self.candy_speed
-        self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.x += math.ceil(self.candy_speed) * self.candy_direction
+        self.rect.y += math.ceil(self.candy_speed)
 
     def update(self, ai_game):
         """update position of bonuses and get rid of old bonuses."""
-        self.check_edges()
-        self.axis_update(ai_game)
-        # look for collision between ship and bonus
-        self.check_collisions(ai_game)
-        # candies hitting the bottom of the screen
-        self._check_candy_bottom()
+        if self.show_flag:
+            self.check_edges()
+            self.axis_update()
+            # look for collision between ship and bonus
+            self.check_collisions(ai_game)
+            # candies hitting the bottom of the screen
+            self._check_candy_bottom()
 
     def draw(self):
         "draw the candy to the screen."
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        if self.show_flag:
+            pygame.draw.rect(self.screen, self.color, self.rect)
 
     def _check_candy_bottom(self):
         """Check if any candy have reached the bottom of the screen."""
         screen_rect = self.screen.get_rect()
-        for candy in self.candies:
-            if candy.rect.bottom >= screen_rect.bottom:
-                self.candies.remove(candy)
+        if self.rect.bottom >= screen_rect.bottom:
+            self.show_flag = False
 
     def check_edges(self):
         """change candy durection if candy is at edge of screen."""
@@ -70,7 +62,16 @@ class Candy(Sprite, Function):
     def check_collisions(self, ai_game):
         """respond to candy-ship collisions."""
         candy_group = pygame.sprite.Group()
-        candy_group.add(ai_game.candy)
-        ai_game.ship.ship_group.add(ai_game.ship)
-        pygame.sprite.groupcollide(
-            ai_game.ship.ship_group, candy_group, False, True)
+        candy_group.add(self)
+        if pygame.sprite.spritecollideany(self.ship, candy_group):
+            self.collision_flag = True
+            self.show_flag = False
+            self.random_position()
+            candy_group.empty()
+
+    def random_position(self):
+        self.random_x = random.randint(0, self.screen.get_rect().width - self.width)
+        self.rect = pygame.Rect(self.random_x, 0, self.width, self.height)
+
+    def change_color(self, color):
+        self.color = color

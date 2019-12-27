@@ -1,20 +1,23 @@
-# 1.7.1(2019-12-23)
+# 2.0.0 (2019-12-27)
+- add the function of drop candy in the first 5 seconds of 10 seconds
+
+# 1.7.1 (2019-12-23)
 - refactor alien_invasion.py, bullet.py, alien.py
 - add bonus_system to manage laser and guarder methods
 
-# 1.7.0(2019-12-21)
+# 1.7.0 (2019-12-21)
 - refactor bonus.py
 - laser and guader methods implement by bonus.py
 
-# 1.6.0(2019-12-12)
+# 1.6.0 (2019-12-12)
 - add guarder.py and sugar.py
 - create a guarder to protect ship 
 - create an abstract class to define three methods: update method、draw method and check_collision method
 
-# 1.5.0(2019-11-28)
+# 1.5.0 (2019-11-28)
 - add bonus.py and drop the bonus random
 
-# 1.4.1(2019-11-23)
+# 1.4.1 (2019-11-23)
 - refactor the class of laser and move the logic of fire laser from alien_invasion.py to laser.py
 
 # 1.4.0 (2019-11-23)

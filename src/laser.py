@@ -13,6 +13,7 @@ class Laser(Sprite, Function):
         self.ai_game = ai_game
         self.groups = pygame.sprite.Group()
         self.fire_flag = False
+        self.key = pygame.K_l
 
         # laser settings
         self.color = (70, 70, 70)
@@ -23,11 +24,10 @@ class Laser(Sprite, Function):
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.rect.centerx = ai_game.ship.rect.centerx
 
-    def axis_update(self):
+    def axis_update(self, ai_game):
         """move the laser with the ship"""
         # update the rect position
-        self.rect.x = self.ai_game.ship.x + \
-            self.ai_game.ship.rect.width / 2 - self.width / 2
+        self.rect.x = ai_game.ship.x + ai_game.ship.rect.width / 2 - self.width / 2
 
     # def draw_laser(self):
     def draw(self):
@@ -37,7 +37,7 @@ class Laser(Sprite, Function):
 
     def update(self, ai_game):
         """update position of laser"""
-        self.axis_update()
+        self.axis_update(ai_game)
         # self._check_laser_alien_collisions(ai_game)
         self.check_collisions(ai_game)
 
@@ -48,7 +48,7 @@ class Laser(Sprite, Function):
         if self.fire_flag:
             laser_group = pygame.sprite.Group()
             # laser_group.add(ai_game.laser)
-            laser_group.add(ai_game.bonus_system.laser)
+            laser_group.add(self)
             conllisions = pygame.sprite.groupcollide(
                 laser_group, ai_game.alien.aliens, False, True)
             if not ai_game.alien.aliens:

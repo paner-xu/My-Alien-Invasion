@@ -14,9 +14,10 @@ class Gaurder(Sprite, Function):
         self.ai_game = ai_game
         self.groups = pygame.sprite.Group()
         self.fire_flag = False
+        self.key = pygame.K_g
 
         # guader settings
-        self.color = (70, 70, 70)
+        self.color = (100, 80, 200)
         self.width = 2
         self.start_angle = math.radians(0)
         self.stop_angle = math.radians(180)
@@ -28,11 +29,10 @@ class Gaurder(Sprite, Function):
         self.rect.centerx = ai_game.ship.rect.centerx
         self.rect.centery = ai_game.ship.rect.centery
 
-    def axis_update(self):
+    def axis_update(self, ai_game):
         """move the guarder with the ship"""
         # update the circle position
-        self.rect.x = self.ai_game.ship.x + \
-            self.ai_game.ship.rect.width / 2 - self.rect.width / 2
+        self.rect.x = ai_game.ship.x + ai_game.ship.rect.width / 2 - self.rect.width / 2
 
     # def draw_guarder(self):
     def draw(self):
@@ -43,7 +43,7 @@ class Gaurder(Sprite, Function):
 
     def update(self, ai_game):
         """update position of laser"""
-        self.axis_update()
+        self.axis_update(ai_game)
         # self._check_laser_alien_collisions(ai_game)
         self.check_collisions(ai_game)
 
@@ -54,7 +54,7 @@ class Gaurder(Sprite, Function):
         if self.fire_flag:
             guarder_group = pygame.sprite.Group()
             # guarder_group.add(ai_game.guarder)
-            guarder_group.add(ai_game.bonus_system.guarder)
+            guarder_group.add(self)
             conllisions = pygame.sprite.groupcollide(
                 guarder_group, ai_game.alien.aliens, False, True)
             if not ai_game.alien.aliens:

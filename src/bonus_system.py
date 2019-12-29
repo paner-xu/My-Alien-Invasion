@@ -21,13 +21,13 @@ class BonusSystem:
         self.candy = Candy(ai_game)
         self.candy_num = 0
 
-    def _check_keydown_events(self, event):
+    def checkKeydownEvents(self, event):
         """Respond to keypress. """
         if self.candy.ID >= 0 and self.candy.collision_flag \
                 and event.key == self.functions[self.candy.ID].key:
             self.functions[self.candy.ID].fire_flag = True
 
-    def _check_keyup_events(self, event):
+    def checkKeyupEvents(self, event):
         """Respond to key release."""
         if self.candy.ID >= 0 and self.candy.collision_flag \
                 and event.key == self.functions[self.candy.ID].key:
@@ -47,6 +47,7 @@ class BonusSystem:
             self.candy_num = 0
 
     def update(self, ai_game):
+        self.drop_candy(ai_game)
         if self.candy.show_flag:
             self.candy.update(ai_game)
         if self.candy.ID >= 0 and self.candy.collision_flag:

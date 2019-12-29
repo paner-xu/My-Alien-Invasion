@@ -45,7 +45,6 @@ class AlienInvasion:
                 self.bullet.update_bullets(self)
                 self.alien.update_aliens(self)
                 self.bonus_system.update(self)
-                self.bonus_system.drop_candy(self)
             self._update_screen()
 
     def _check_events(self):
@@ -53,10 +52,10 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-                self.bonus_system._check_keydown_events(event)
+                self.bonus_system.checkKeydownEvents(event)
             if event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-                self.bonus_system._check_keyup_events(event)
+                self.bonus_system.checkKeyupEvents(event)
 
     def _check_keydown_events(self, event):
         """Respond to keypress. """

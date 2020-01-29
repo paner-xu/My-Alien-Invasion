@@ -1,3 +1,7 @@
+# 2.0.1 (2020-01-29)
+- make the ship can only hold the fuction 8s
+- normalize the call of class's API
+
 # 2.0.0 (2019-12-27)
 - add the function of drop candy in the first 5 seconds of 10 seconds
 

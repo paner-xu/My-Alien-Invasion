@@ -1,9 +1,9 @@
 import pygame
 from pygame.sprite import Sprite
-from function import Function
+from function import AuxiliaryFunction
 
 
-class Laser(Sprite, Function):
+class Laser(Sprite, AuxiliaryFunction):
     """A class to manage lasers fired from the ship"""
 
     def __init__(self, ai_game):
@@ -54,3 +54,16 @@ class Laser(Sprite, Function):
             if not ai_game.alien.aliens:
                 # destroy exiting laser and create new fleet.
                 ai_game.alien.create_fleet()
+
+    # change the fire_flag status
+    def setFireFlag(self, fireFlag):
+        self.fire_flag = fireFlag
+
+    def getFireFlag(self):
+        return self.fire_flag
+
+    def getKey(self):
+        return self.key
+
+    def getColor(self):
+        return self.color

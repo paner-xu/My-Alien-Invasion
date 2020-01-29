@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class Function(metaclass=ABCMeta):
+class AuxiliaryFunction(metaclass=ABCMeta):
     """a abstract class to manage three methods."""
     @abstractmethod
     def axis_update(self):

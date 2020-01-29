@@ -1,10 +1,10 @@
 import pygame
 from pygame.sprite import Sprite
-from function import Function
+from function import AuxiliaryFunction
 import math
 
 
-class Gaurder(Sprite, Function):
+class Gaurder(Sprite, AuxiliaryFunction):
     """A class to manage guader to protect the ship"""
 
     def __init__(self, ai_game):
@@ -60,3 +60,16 @@ class Gaurder(Sprite, Function):
             if not ai_game.alien.aliens:
                 # destroy exiting guarder and create new fleet.
                 ai_game.alien.create_fleet()
+
+    # change the fire_flag status
+    def setFireFlag(self, fireFlag):
+        self.fire_flag = fireFlag
+
+    def getFireFlag(self):
+        return self.fire_flag
+
+    def getKey(self):
+        return self.key
+
+    def getColor(self):
+        return self.color

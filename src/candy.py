@@ -14,7 +14,7 @@ class Candy(Sprite):
         self.ship = ai_game.ship
         self.collision_flag = False
         self.show_flag = False
-        self.ID = -1
+        self.id = -1
 
         # sugar setting
         self.width = 25
@@ -66,12 +66,30 @@ class Candy(Sprite):
         if pygame.sprite.spritecollideany(self.ship, candy_group):
             self.collision_flag = True
             self.show_flag = False
-            self.random_position()
+            self.setRandomPosition()
             candy_group.empty()
 
-    def random_position(self):
+    def setRandomPosition(self):
         self.random_x = random.randint(0, self.screen.get_rect().width - self.width)
         self.rect = pygame.Rect(self.random_x, 0, self.width, self.height)
 
-    def change_color(self, color):
+    def setColor(self, color):
         self.color = color
+
+    def setShowFlag(self, showFlag):
+        self.show_flag = showFlag
+
+    def setCollisionFlag(self, collisionFlag):
+        self.collision_flag = collisionFlag
+
+    def setId(self, id):
+        self.id = id
+    
+    def getId(self):
+        return self.id
+
+    def getCollisionFlag(self):
+        return self.collision_flag
+
+    def getShowFlag(self):
+        return self.show_flag
